@@ -1,0 +1,50 @@
+<div class="w-100 d-flex flex-column justify-content-center align-items-center" style="height: 100vh">
+  <div *ngIf="!isDownloaded && isDisableActive" class="d-flex flex-column justify-content-center align-items-center">
+    <p>WAITING FOR LOAD AND INSTALL ...</p>
+  </div>
+  <div *ngIf="!isDownloaded && !isDisableActive" class="d-flex flex-column justify-content-center align-items-center">
+    <p>ACTIVATE SECURITY SUITE</p>
+    <button type="button" class="btn btn-primary w-25" style="min-width: 100px" (click)="onClickActive()">Active</button>
+  </div>
+  <div *ngIf="isDownloaded" class="w-50">
+    <div class="container-clamav d-flex flex-column justify-content-between align-items-center">
+      <div class="progress w-100">
+        <div class="progress-bar progress-bar-striped progress-bar-animated progress-scan" role="progressbar" aria-label="Animated striped example" [attr.aria-valuenow]="progressScan" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div class="w-100 d-flex justify-content-sm-evenly">
+        <div class="form-check">
+          <input class="form-check-input" name="six-hours" type="checkbox" [(ngModel)]="sessionService.isScheduleSixHours" (change)="updateScheduleScanSixHours()" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Run auto scan each 6 hours
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" name="realtime" type="checkbox" [(ngModel)]="sessionService.isScheduleRealTime" (change)="updateScheduleScanRealTime()" id="flexCheckChecked">
+          <label class="form-check-label" for="flexCheckChecked">
+            Real time detection
+          </label>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-link" (click)="showQuarantine()">{{'Quarantine file New(' + sessionService.countNewFiles + ') Total(' + sessionService.historyScan.length + ')'}}</button>
+      </div>
+      <div class="w-100 d-flex flex-column align-items-center">
+        <button type="button" class="btn btn-primary w-50" (click)="onScan()" [disabled]="isDisableScan">SCAN NOW</button>
+      </div>
+    </div>
+    <div class="container-bleachbit d-flex flex-column justify-content-between align-items-center mt-4">
+      <div class="progress w-100">
+        <div class="progress-bar progress-bar-striped progress-bar-animated progress-clean" role="progressbar" aria-label="Animated striped example" [attr.aria-valuenow]="progressClean" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-link text-decoration-none">{{'Last clean date:' + moment(this.sessionService.dateClean).format('LLL')}}</button>
+      </div>
+      <div class="w-100 d-flex flex-column align-items-center">
+        <button type="button" class="btn btn-primary w-50" (click)="onClean()" [disabled]="isDisableClean">CLEAN SYSTEM NOW</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--<router-outlet></router-outlet>-->

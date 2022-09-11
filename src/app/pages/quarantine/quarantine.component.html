@@ -1,0 +1,24 @@
+<table class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th scope="col">File name</th>
+    <th scope="col">Reason</th>
+    <th scope="col">Date</th>
+    <th scope="col">Action</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of sessionService.historyScan">
+    <td>{{item.name}}</td>
+    <td>{{item.reason + ' (' + item.status + ')'}}</td>
+    <td>{{moment(item.updatedAt).format('LLL')}}</td>
+    <td colspan="2">
+      <button type="button" class="btn btn-primary" (click)="burnFile(item)">Burn from system</button>
+      or
+      <button type="button" class="btn btn-link" (click)="allowFile(item)">allow on system</button>
+    </td>
+  </tr>
+
+  </tbody>
+</table>
