@@ -16,8 +16,8 @@ let jobNameRealTime = '';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -38,7 +38,7 @@ function createWindow() {
     await scanClamav(event);
     // const readdata = await exec('cat tmp.log');
     // console.log('scan-clamav log', readdata);
-    // isScanning = false;
+    isScanning = false;
     // event.reply('scan-clamav-reply', readdata.stdout)
   })
 
@@ -56,12 +56,12 @@ function createWindow() {
         //function Do stuff every 6 hours
         if(isScheduleSixHours && !isScanning) {
           isScanning = true;
-          await exec('> tmp.log');
-          await scanClamav();
-          const readdata = await exec('cat tmp.log');
-          console.log('scan-clamav log', readdata);
+          // await exec('> tmp.log');
+          await scanClamav(event);
+          // const readdata = await exec('cat tmp.log');
+          // console.log('scan-clamav log', readdata);
           isScanning = false
-          event.reply('scan-clamav-reply', readdata.stdout)
+          // event.reply('scan-clamav-reply', readdata.stdout)
         }
       });
     } else if (!isScheduleSixHours && jobNameScheduleSixHours !== '') {
@@ -81,13 +81,13 @@ function createWindow() {
         //function Do stuff every 5 minutes
         if(isScheduleRealTime && !isScanning) {
           isScanning = true;
-          await exec('> tmp.log');
-          await scanClamav();
-          const readdata = await exec('cat tmp.log');
-          const date = new Date()
-          console.log('scan-clamav log', date , readdata);
+          // await exec('> tmp.log');
+          await scanClamav(event);
+          // const readdata = await exec('cat tmp.log');
+          // const date = new Date()
+          // console.log('scan-clamav log', date , readdata);
           isScanning = false;
-          event.reply('scan-clamav-reply', readdata.stdout)
+          // event.reply('scan-clamav-reply', readdata.stdout)
         }
       });
     } else if (!isScheduleRealTime && jobNameRealTime !== '') {
@@ -108,7 +108,7 @@ function createWindow() {
       slashes: true
     })
   );
-  mainWindow.webContents.openDevTools() // for debug
+  // mainWindow.webContents.openDevTools() // for debug
 
   mainWindow.on('closed', function () {
     mainWindow = null

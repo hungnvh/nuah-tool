@@ -67,15 +67,14 @@ export class AppComponent implements OnInit {
   onClickActive() {
     this.isDownloaded = true;
     this.initScheduleDefault();
-    let bar = document.querySelector('.progress-scan') as any;
-    this.progressScan = 1;
-    bar.style.width = this.progressScan + "%";
-    bar.innerText = this.progressScan + "%";
   }
 
   onScan() {
     this.isDisableScan = true;
+    let progressBar = document.querySelector('.progress-scan') as any;
     this.progressScan = 1;
+    progressBar.style.width = this.progressScan + "%";
+    progressBar.innerText = this.progressScan + "%";
     this._ipc?.send('scan-clamav', 'scan-clamav');
     this._ipc?.on('scan-clamav-reply', (_event, arg) => {
       this.zone.run(()=>{
@@ -120,9 +119,24 @@ export class AppComponent implements OnInit {
         // todo update data clean
         this.sessionService.dateClean = new Date();
         console.log('RESPONSE CLEAN 2', arg);
-        this.isDisableClean = false;
+
       });
     })
+
+    let bar = document.querySelector('.progress-clean') as any;
+    let counter = 0
+    let timmer = setInterval(() => {
+      this.progressClean = parseInt(`${counter / 5 * 100}`);
+      bar.style.width = this.progressClean + "%";
+      bar.innerText = this.progressClean + "%";
+
+      if(counter === 5) {
+        this.isDisableClean = false;
+        clearInterval(timmer);
+      } else {
+        counter++;
+      }
+    }, 200)
   }
 
   updateScheduleScanSixHours() {
