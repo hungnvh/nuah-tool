@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class AppComponent implements OnInit {
   title = 'nuah-tool';
   isDownloaded: boolean = false; // init = false
-  isDisableActive: boolean = true;
+  isInstalling: boolean = false;
   private _ipc: IpcRenderer | undefined;
   moment = moment;
 
@@ -40,8 +40,6 @@ export class AppComponent implements OnInit {
       try {
         this._ipc = window.require('electron').ipcRenderer;
 
-        this.loadableInstallSoftware();
-
       } catch (e) {
         throw e;
       }
@@ -51,10 +49,13 @@ export class AppComponent implements OnInit {
   }
 
   loadableInstallSoftware() {
+    this.isInstalling = true;
     this._ipc?.send('set-loadable-software', 'set-loadable-software');
     this._ipc?.on('loadable-software-reply', (_event, arg) => {
       this.zone.run(()=>{
-        this.isDisableActive = false;
+        this.isInstalling = false;
+        this.isDownloaded = true;
+        this.initScheduleDefault();
       });
     })
   }
@@ -65,8 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   onClickActive() {
-    this.isDownloaded = true;
-    this.initScheduleDefault();
+    this.loadableInstallSoftware();
   }
 
   onScan() {
@@ -132,6 +132,7 @@ export class AppComponent implements OnInit {
 
       if(counter === 5) {
         this.isDisableClean = false;
+        this.sessionService.isFirstInstall = false;
         clearInterval(timmer);
       } else {
         counter++;

@@ -21,6 +21,7 @@ export class SessionService {
 
   // Clean
   dateClean: Date = new Date();
+  isFirstInstall: boolean = true;
 
   constructor() {
   }

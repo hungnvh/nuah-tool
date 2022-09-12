@@ -3,13 +3,17 @@
 .container-clamav {
   height: 20vh;
   width: 100%;
-  background-color: antiquewhite;
+  //background-color: antiquewhite;
   min-height: 150px;
 }
 
 .container-bleachbit {
   height: 12vh;
   width: 100%;
-  background-color: aquamarine;
+  //background-color: aquamarine;
   min-height: 120px;
+}
+
+.progress-bar {
+  background-color: lightgray;
 }
